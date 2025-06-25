@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GHOSTRUNNER - Neo-Kyoto 2077</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Exo+2:wght@300;400;600&display=swap" rel="stylesheet">
+    <meta name="theme-color" content="#ff3c00">
+    <meta name="description" content="Elitní hacker v Neo-Kyoto 2077 - Unikni z rozpadající se vesmírné stanice!">
+</head>
+<body>
+    <!-- Úvodní obrazovka -->
+    <div id="homeScreen" class="screen active">
+        <div class="container">
+            <div class="game-title">
+                <h1 class="glitch-text" data-text="GHOSTRUNNER">GHOSTRUNNER</h1>
+                <div class="subtitle">Neo-Kyoto 2077</div>
+            </div>
+            
+            <div class="story-intro">
+                <p>Jsi elitní hacker probouzející se na rozpadající se vesmírné stanici <span class="highlight">Kibō-7</span>.</p>
+                <p>Stanice je na pokraji zničení. Máš omezený kyslík. Musíš opravit systémy a uniknout!</p>
+            </div>
+
+            <div class="menu-buttons">
+                <button class="btn btn--primary neon-btn" id="newGameBtn">
+                    <span class="btn-text">NOVÁ HRA</span>
+                    <div class="btn-glow"></div>
+                </button>
+                
+                <button class="btn btn--secondary neon-btn" id="continueBtn" style="display: none;">
+                    <span class="btn-text">POKRAČOVAT</span>
+                    <div class="btn-glow"></div>
+                </button>
+                
+                <button class="btn btn--outline neon-btn" id="installBtn">
+                    <span class="btn-text">INSTALOVAT HRU</span>
+                    <div class="btn-glow"></div>
+                </button>
+                
+                <button class="btn btn--outline neon-btn" id="shareBtn">
+                    <span class="btn-text">SDÍLET HRU</span>
+                    <div class="btn-glow"></div>
+                </button>
+            </div>
+        </div>
+        
+        <div class="tech-overlay">
+            <div class="circuit-lines"></div>
+            <div class="hologram-indicators">
+                <div class="indicator pulse"></div>
+                <div class="indicator pulse" style="animation-delay: 0.5s;"></div>
+                <div class="indicator pulse" style="animation-delay: 1s;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Herní obrazovka -->
+    <div id="gameScreen" class="screen">
+        <div class="game-hud">
+            <div class="oxygen-display">
+                <div class="hud-label">KYSLÍK</div>
+                <div class="oxygen-bar">
+                    <div class="oxygen-fill" id="oxygenFill"></div>
+                    <div class="oxygen-text" id="oxygenText">100%</div>
+                </div>
+            </div>
+            
+            <div class="station-status">
+                <div class="status-label">STANICE KIBŌ-7</div>
+                <div class="status-indicator critical">KRITICKÝ STAV</div>
+            </div>
+        </div>
+
+        <!-- Úkol 1: Drag & Drop -->
+        <div id="task1" class="task-container">
+            <div class="task-header">
+                <h2>ÚKOL 1: OBNOVENÍ NAPÁJENÍ</h2>
+                <p>Přesuň napájecí články na správná místa pro obnovení systémů stanice</p>
+            </div>
+            
+            <div class="power-grid">
+                <div class="power-slots">
+                    <div class="power-slot" data-type="quantum" id="slot-quantum">
+                        <div class="slot-label">QUANTUM CORE</div>
+                        <div class="slot-indicator"></div>
+                    </div>
+                    <div class="power-slot" data-type="fusion" id="slot-fusion">
+                        <div class="slot-label">FUSION REACTOR</div>
+                        <div class="slot-indicator"></div>
+                    </div>
+                    <div class="power-slot" data-type="plasma" id="slot-plasma">
+                        <div class="slot-label">PLASMA CONDUIT</div>
+                        <div class="slot-indicator"></div>
+                    </div>
+                    <div class="power-slot" data-type="antimatter" id="slot-antimatter">
+                        <div class="slot-label">ANTIMATTER CHAMBER</div>
+                        <div class="slot-indicator"></div>
+                    </div>
+                </div>
+                
+                <div class="power-cells">
+                    <div class="power-cell hexagon blue" draggable="true" data-type="quantum" id="cell-quantum">
+                        <div class="cell-core"></div>
+                    </div>
+                    <div class="power-cell rectangle red" draggable="true" data-type="fusion" id="cell-fusion">
+                        <div class="cell-core"></div>
+                    </div>
+                    <div class="power-cell circle lime" draggable="true" data-type="plasma" id="cell-plasma">
+                        <div class="cell-core"></div>
+                    </div>
+                    <div class="power-cell triangle magenta" draggable="true" data-type="antimatter" id="cell-antimatter">
+                        <div class="cell-core"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Úkol 2: Kvíz -->
+        <div id="task2" class="task-container" style="display: none;">
+            <div class="task-header">
+                <h2>ÚKOL 2: NAVIGAČNÍ SYSTÉM</h2>
+                <p>Odpověz na otázky pro aktivaci navigačního systému</p>
+            </div>
+            
+            <div class="quiz-container">
+                <div class="question-counter">
+                    <span id="currentQuestion">1</span> / <span id="totalQuestions">5</span>
+                </div>
+                
+                <div class="question-panel">
+                    <div class="question-text" id="questionText"></div>
+                    <div class="answer-options" id="answerOptions"></div>
+                </div>
+                
+                <div class="quiz-progress">
+                    <div class="progress-bar">
+                        <div class="progress-fill" id="quizProgress"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Obrazovka výhry -->
+    <div id="winScreen" class="screen">
+        <div class="container">
+            <div class="result-panel success">
+                <h1 class="glitch-text" data-text="MISE SPLNĚNA">MISE SPLNĚNA</h1>
+                <p>Úspěšně jsi opravil systémy stanice Kibō-7 a aktivoval únikové moduly!</p>
+                <p>Ghostrunner protokol byl úspěšně dokončen.</p>
+                
+                <div class="stats">
+                    <div class="stat">
+                        <span class="stat-label">Zbývající kyslík:</span>
+                        <span class="stat-value" id="finalOxygen">--</span>
+                    </div>
+                </div>
+                
+                <button class="btn btn--primary neon-btn" id="playAgainBtn">
+                    <span class="btn-text">HRÁT ZNOVU</span>
+                    <div class="btn-glow"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Obrazovka prohry -->
+    <div id="loseScreen" class="screen">
+        <div class="container">
+            <div class="result-panel failure">
+                <h1 class="glitch-text" data-text="SYSTÉM SELHAL">SYSTÉM SELHAL</h1>
+                <p>Nedostatek kyslíku. Stanice Kibō-7 byla ztracena.</p>
+                <p>Ghostrunner protokol byl přerušen.</p>
+                
+                <button class="btn btn--primary neon-btn" id="retryBtn">
+                    <span class="btn-text">ZKUSIT ZNOVU</span>
+                    <div class="btn-glow"></div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay efekty -->
+    <div id="lowOxygenOverlay" class="low-oxygen-overlay"></div>
+    <div id="notification" class="notification"></div>
+
+    <script src="app.js"></script>
+</body>
+</html>
